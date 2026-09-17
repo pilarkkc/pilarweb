@@ -372,6 +372,10 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
 .nav-links a{font-weight:500;font-size:13.5px;color:var(--ink-dim);padding:8px 15px;border-radius:999px;transition:color .25s var(--ease),background .25s var(--ease)}
 .nav-links a:hover{color:var(--ink)}
 .nav-links a.active{color:var(--ink);font-weight:600;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.nav-login{font-weight:500;font-size:13.5px;color:var(--ink-dim);padding:8px 4px;white-space:nowrap;transition:color .25s var(--ease)}
+.nav-login:hover{color:var(--ink)}
+.nav-login.active{color:var(--ink);font-weight:600}
+@media (max-width:860px){.nav-login{display:none}}
 .hamburger{display:none;background:rgba(255,255,255,.55);border:1px solid var(--glass-brd);border-radius:50%;cursor:pointer;padding:8px;color:var(--ink);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .hamburger svg{width:22px;height:22px;stroke:currentColor;display:block}
@@ -629,7 +633,7 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
 {
   "brand":{"name":"Pilar"},
   "hero":{"eyebrow":"Pilates · Reformer · Barre · Yoga — Khon Kaen","l1":"Move With","l2":"Intention.","sub":"Pilar คือสตูดิโอบูทีคที่เชื่อว่าการเคลื่อนไหวอย่างตั้งใจ เปลี่ยนทั้งร่างกายและจิตใจ — ฝึกในพื้นที่ที่ออกแบบมาเพื่อคุณ กับครูผู้สอนสาย BASI","img":"","meta":[{"k":"4+","v":"ประเภทคลาส"},{"k":"8–20","v":"เปิดทุกวัน (ปิดจันทร์)"},{"k":"BASI","v":"มาตรฐานการสอน"},{"k":"1:1","v":"คลาสส่วนตัว"}]},
-  "kenko":{"scheduleUrl":"","pricingUrl":"","bookUrl":""},
+  "kenko":{"scheduleUrl":"https://pilar.onbookee.com/class-schedule","pricingUrl":"https://pilar.onbookee.com/pricing","bookUrl":"https://pilar.onbookee.com/class-schedule","loginUrl":"https://pilar.onbookee.com/login","signupUrl":"https://pilar.onbookee.com/create-account"},
   "services":[{"t":"Reformer","d":"อุปกรณ์ Reformer เต็มรูปแบบ"},{"t":"Mat Pilates","d":"พื้นฐานตามหลัก BASI"},{"t":"Barre","d":"กระชับสัดส่วนตามจังหวะ"},{"t":"Yoga","d":"ผ่อนคลาย เพิ่มความยืดหยุ่น"},{"t":"Private","d":"เทรนตัวต่อตัวเฉพาะคุณ"},{"t":"Prenatal","d":"ดูแลคุณแม่ตั้งครรภ์"}],
   "gallery":[{"label":"Reformer Room","img":""},{"label":"Barre Studio","img":""},{"label":"Mat Class","img":""},{"label":"Community","img":""}],
   "classes":[
@@ -665,6 +669,7 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
     </a>
     <nav class="nav-links" id="deskNav"></nav>
     <div style="display:flex;align-items:center;gap:12px">
+      <a href="#/login" class="nav-login" id="navLogin">Login / Signup</a>
       <a href="#/schedule" class="btn btn-gold" id="navBook" style="padding:7px 8px 7px 20px">Book</a>
       <button class="hamburger" id="openMenu" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"></path></svg></button>
     </div>
@@ -678,6 +683,7 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
   </div>
   <nav id="mobNav"></nav>
   <div class="m-foot">
+    <a href="#/login" class="btn btn-ghost btn-lg" id="mobLogin">Login / Signup</a>
     <a href="#/schedule" class="btn btn-gold btn-lg">จองคลาสวันนี้</a>
     <span style="color:var(--muted);font-size:12.5px">Khon Kaen · เปิด 8:00–20:00 · ปิดวันจันทร์</span>
   </div>
@@ -723,7 +729,9 @@ const bookHref = () => (STATE.kenko&&(STATE.kenko.bookUrl||STATE.kenko.scheduleU
 const ext = h => (h||"").startsWith("http");
 
 /* ---------- routes ---------- */
-const ROUTES=[["/","Home"],["/classes","Classes"],["/instructors","Instructors"],["/studio","Studio"],["/schedule","Schedule"],["/packages","Packages"],["/contact","Contact"]];
+const ROUTES=[["/","Home"],["/classes","Classes"],["/instructors","Instructors"],["/studio","Studio"],["/schedule","Schedule"],["/packages","Packages"],["/contact","Contact"],["/login","Login / Signup"]];
+const loginHref  = () => (STATE.kenko&&STATE.kenko.loginUrl)||"";
+const signupHref = () => (STATE.kenko&&STATE.kenko.signupUrl)||"";
 const NAVSHOW=["/classes","/instructors","/studio","/schedule","/packages","/contact"];
 
 const chk='<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
@@ -858,6 +866,34 @@ const PAGES = {
       <div style="margin-top:48px"><div class="eyebrow" style="margin-bottom:16px">ซื้อผ่านระบบ Kenko</div>${embedBlock(STATE.kenko&&STATE.kenko.pricingUrl,"Packages")}</div>
     </div></section>`,
 
+  "/login":()=>{
+    const lg=loginHref(), su=signupHref();
+    if(!lg){
+      return `<section class="section"><div class="wrap page">
+        <div class="shead"><div class="eyebrow">Member Account</div><h2 class="display">Member<span class="grad-gold"> login</span></h2></div>
+        <div class="embed-wrap"><div class="embed-fallback">
+          <div class="ic">${cal}</div><h3>Login link not set</h3>
+          <p>Add your Kenko login link in edit mode and this page will show the member sign-in.</p>
+          <p class="hint">กดปุ่ม “✎ แก้ไขเว็บ” → หัวข้อ “ลิงก์ Kenko / Bookee” → ใส่ Login URL</p>
+        </div></div></div></section>`;
+    }
+    return `<section class="section"><div class="wrap page">
+      <div class="shead"><div class="eyebrow">Member Account</div>
+        <h2 class="display">Member<span class="grad-gold"> login</span></h2>
+        <p>Sign in to manage your bookings, packages and membership — powered by Pilar's Kenko system.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:4px">
+          <a class="btn btn-gold" href="${esc(lg)}" target="_blank" rel="noopener">Open login</a>
+          ${su?`<a class="btn btn-ghost" href="${esc(su)}" target="_blank" rel="noopener">Create an account</a>`:''}
+        </div>
+      </div>
+      <div class="embed-wrap"><iframe src="${esc(lg)}" title="Pilar member login" loading="lazy" allow="payment"></iframe></div>
+      <p class="hint" style="margin-top:14px;text-align:center;color:var(--muted);font-size:13px">
+        ถ้าช่องด้านบนว่างเปล่า (ระบบความปลอดภัยของ Kenko บางครั้งไม่อนุญาตให้ฝังในเว็บอื่น) ใช้ปุ่ม
+        <b>Open login</b> ด้านบนเพื่อเปิดในแท็บใหม่ได้เลย
+      </p>
+    </div></section>`;
+  },
+
   "/contact":()=>{
     const c=STATE.contact||{};
     const side=[];
@@ -899,7 +935,7 @@ function paintChrome(){
 function render(){
   const path=currentPath();
   app.innerHTML=(PAGES[path]||PAGES["/"])();
-  document.querySelectorAll("#deskNav a,#mobNav a").forEach(a=>a.classList.toggle("active", a.getAttribute("href")==="#"+path));
+  document.querySelectorAll("#deskNav a,#mobNav a,#navLogin").forEach(a=>a.classList.toggle("active", a.getAttribute("href")==="#"+path));
   paintChrome();
   const f=document.getElementById("cform");
   if(f) f.addEventListener("submit",e=>{e.preventDefault();document.getElementById("cnote").textContent="ขอบคุณค่ะ! ทีมงานจะติดต่อกลับโดยเร็ว";f.reset();});
@@ -948,6 +984,8 @@ const EDIT_SCHEMA=[
     {path:"kenko.scheduleUrl",label:"ลิงก์ตารางคลาส / จอง (Bookee)",type:"url",help:"เช่น https://pilar.onbookee.com/…  — จะไปแสดงในหน้า ‘ตารางคลาส’"},
     {path:"kenko.pricingUrl",label:"ลิงก์แพ็กเกจ / ราคา (Bookee)",type:"url",help:"จะไปแสดงในหน้า ‘แพ็กเกจ’"},
     {path:"kenko.bookUrl",label:"ลิงก์ปุ่ม ‘จอง’ หลัก",type:"url",help:"เว้นว่างได้ = ใช้ลิงก์ตารางคลาสอัตโนมัติ"},
+    {path:"kenko.loginUrl",label:"ลิงก์ Login สมาชิก (Bookee)",type:"url",help:"ของ Pilar: https://pilar.onbookee.com/login — แสดงในหน้า Login / Signup"},
+    {path:"kenko.signupUrl",label:"ลิงก์สมัครสมาชิกใหม่ (Bookee)",type:"url",help:"ของ Pilar: https://pilar.onbookee.com/create-account"},
   ]},
   {group:"✍️ แบรนด์ & หัวเว็บ (Hero)",fields:[
     {path:"brand.name",label:"ชื่อแบรนด์",type:"text"},

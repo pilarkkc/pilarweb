@@ -372,15 +372,13 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
 .nav-links a{font-weight:500;font-size:13.5px;color:var(--ink-dim);padding:8px 15px;border-radius:999px;transition:color .25s var(--ease),background .25s var(--ease)}
 .nav-links a:hover{color:var(--ink)}
 .nav-links a.active{color:var(--ink);font-weight:600;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.08)}
-.nav-login{font-weight:500;font-size:13.5px;color:var(--ink-dim);padding:8px 4px;white-space:nowrap;transition:color .25s var(--ease)}
-.nav-login:hover{color:var(--ink)}
-.nav-login.active{color:var(--ink);font-weight:600}
-@media (max-width:860px){.nav-login{display:none}}
 .hamburger{display:none;background:rgba(255,255,255,.55);border:1px solid var(--glass-brd);border-radius:50%;cursor:pointer;padding:8px;color:var(--ink);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .hamburger svg{width:22px;height:22px;stroke:currentColor;display:block}
 .mobile-sheet{position:fixed;inset:0;z-index:60;background:rgba(237,236,232,.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  display:flex;flex-direction:column;padding:24px;padding-top:calc(24px + env(safe-area-inset-top,0px));transform:translateY(-100%);transition:transform .42s var(--ease)}
+  display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;
+  padding:24px;padding-top:calc(24px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));
+  transform:translateY(-100%);transition:transform .42s var(--ease)}
 .mobile-sheet.open{transform:translateY(0)}
 .mobile-sheet .m-top{display:flex;justify-content:space-between;align-items:center}
 .mobile-sheet nav{display:flex;flex-direction:column;gap:2px;margin-top:36px}
@@ -401,12 +399,6 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
 .hero h1 .l2{display:block;color:rgba(23,24,28,.42);font-weight:300}
 .hero-sub{margin-top:26px;max-width:52ch;color:var(--ink-dim);font-size:clamp(15px,2.2vw,17px)}
 .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
-.hero-meta{display:flex;flex-wrap:wrap;gap:12px;margin-top:52px}
-.hero-meta div{display:flex;flex-direction:column;gap:3px;background:var(--glass);border:1px solid var(--glass-brd);
-  backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);
-  border-radius:30px;corner-shape:squircle;padding:18px 22px;box-shadow:var(--glass-sh);min-width:124px}
-.hero-meta .k{font-weight:500;font-size:28px;color:var(--ink);letter-spacing:-.03em;line-height:1}
-.hero-meta .v{font-size:11.5px;color:var(--muted)}
 
 /* ── marquee ─────────────────────────────────────────── */
 .marquee{position:relative;z-index:1;border-block:1px solid rgba(255,255,255,.5);padding-block:18px;overflow:hidden;
@@ -492,6 +484,8 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
 .plan.feat{background:rgba(255,255,255,.62);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.9), 0 0 0 1.5px rgba(23,24,28,.5), 0 20px 42px -18px rgba(60,50,30,.35)}
 .plan.feat::before{content:"POPULAR";position:absolute;top:24px;right:24px;font-weight:600;font-size:9.5px;letter-spacing:.16em;color:#fff;
   background:var(--signal);padding:5px 11px;border-radius:999px;corner-shape:squircle;box-shadow:0 6px 14px -6px rgba(23,24,28,.5)}
+.plan .pimg{margin:-6px -6px 16px;border-radius:34px;overflow:hidden;aspect-ratio:16/10;background:rgba(23,24,28,.05)}
+.plan .pimg img{width:100%;height:100%;object-fit:cover;display:block}
 .plan .pname{font-weight:500;font-size:22px;color:var(--ink);letter-spacing:-.02em}
 .plan .ptag{color:var(--muted);font-size:12.5px}
 .plan .pprice{font-weight:500;font-size:44px;margin-top:14px;color:var(--ink);letter-spacing:-.04em;line-height:1}
@@ -502,8 +496,17 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
 .plan .btn{margin-top:auto;width:100%}
 
 /* embed */
-.embed-wrap{border-radius:44px;overflow:hidden;min-height:520px;position:relative}
-.embed-wrap iframe{width:100%;height:78vh;min-height:560px;border:0;display:block;background:#fff}
+.embed-wrap{border-radius:44px;overflow:hidden;position:relative;height:var(--embed-h,1700px);min-height:520px}
+.embed-wrap iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+/* มือถือ: Kenko เรียงเนื้อหาเป็นแนวตั้ง เลยต้องสูงกว่าเดสก์ท็อป */
+@media (max-width:760px){.embed-wrap{height:calc(var(--embed-h,1700px) * 1.28)}}
+/* แถบหัวกล่อง embed — ปุ่มเปิดเต็มหน้า */
+.embed-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.embed-head .lbl{font-size:13px;color:var(--muted)}
+.embed-open{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--ink);
+  background:rgba(255,255,255,.55);border:1px solid var(--glass-brd);border-radius:999px;padding:8px 16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:background .25s var(--ease),transform .2s var(--ease)}
+.embed-open:hover{background:#fff;transform:translateY(-1px)}
 .embed-fallback{padding:52px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
 .embed-fallback .ic{width:56px;height:56px;border-radius:50%;border:1px solid rgba(23,24,28,.45);display:grid;place-items:center;color:var(--ink)}
 .embed-fallback .ic svg{width:22px;height:22px}
@@ -623,7 +626,20 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
 @media (max-width:900px){.contact-row{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:760px){.nav-links{display:none}.hamburger{display:inline-flex}.section{padding-block:62px}.band{padding:34px 26px;border-radius:44px}
   .foot-grid{grid-template-columns:1fr}.wrap{padding-inline:18px}.hero{min-height:auto}}
-@media (max-width:460px){.gallery{grid-template-columns:repeat(2,1fr);gap:10px}.hero-meta{gap:10px}.hero-meta div{min-width:0;flex:1;padding:15px 16px}}
+@media (max-width:460px){.gallery{grid-template-columns:repeat(2,1fr);gap:10px}}
+
+
+/* ===== มือถือ: การ์ดเรียง 3 คอลัมน์ — ย่อทั้งก้อน คงสัดส่วนเดิมของการ์ด =====
+   วิธี: จัดกริดด้วยความกว้างแบบเดสก์ท็อป (--grid-w) แล้ว zoom ย่อลงให้พอดีจอ
+   ทุกอย่างในการ์ด (ฟอนต์ ระยะขอบ มุมโค้ง รูป) ย่อตามสัดส่วนเดียวกันทั้งหมด */
+@media (max-width:760px){
+  .wrap{padding-inline:12px}
+  .svc,.class-grid,.people,.price-grid,.info-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    width:var(--grid-w,1120px);
+    zoom:var(--grid-zoom,.32);
+  }
+}
 
 </style>
 
@@ -631,33 +647,204 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
 <body>
 <script id="pilar-state" type="application/json">
 {
-  "brand":{"name":"Pilar"},
-  "hero":{"eyebrow":"Pilates · Reformer · Barre · Yoga — Khon Kaen","l1":"Move With","l2":"Intention.","sub":"Pilar คือสตูดิโอบูทีคที่เชื่อว่าการเคลื่อนไหวอย่างตั้งใจ เปลี่ยนทั้งร่างกายและจิตใจ — ฝึกในพื้นที่ที่ออกแบบมาเพื่อคุณ กับครูผู้สอนสาย BASI","img":"","meta":[{"k":"4+","v":"ประเภทคลาส"},{"k":"8–20","v":"เปิดทุกวัน (ปิดจันทร์)"},{"k":"BASI","v":"มาตรฐานการสอน"},{"k":"1:1","v":"คลาสส่วนตัว"}]},
-  "kenko":{"scheduleUrl":"https://pilar.onbookee.com/class-schedule","pricingUrl":"https://pilar.onbookee.com/pricing","bookUrl":"https://pilar.onbookee.com/class-schedule","loginUrl":"https://pilar.onbookee.com/login","signupUrl":"https://pilar.onbookee.com/create-account"},
-  "services":[{"t":"Reformer","d":"อุปกรณ์ Reformer เต็มรูปแบบ"},{"t":"Mat Pilates","d":"พื้นฐานตามหลัก BASI"},{"t":"Barre","d":"กระชับสัดส่วนตามจังหวะ"},{"t":"Yoga","d":"ผ่อนคลาย เพิ่มความยืดหยุ่น"},{"t":"Private","d":"เทรนตัวต่อตัวเฉพาะคุณ"},{"t":"Prenatal","d":"ดูแลคุณแม่ตั้งครรภ์"}],
-  "gallery":[{"label":"Reformer Room","img":""},{"label":"Barre Studio","img":""},{"label":"Mat Class","img":""},{"label":"Community","img":""}],
-  "classes":[
-    {"tag":"Signature","name":"Reformer Flow","desc":"คลาส Reformer แบบต่อเนื่อง สร้างความแข็งแรงแกนกลางลำตัวและความยืดหยุ่น เหมาะกับทุกระดับ","len":"50 นาที","lvl":"All levels","img":""},
-    {"tag":"Foundation","name":"Mat Pilates","desc":"พื้นฐาน Pilates บนเสื่อ ตามหลัก BASI เน้นการหายใจ การจัดวางร่างกาย และการควบคุม","len":"50 นาที","lvl":"Beginner+","img":""},
-    {"tag":"Sculpt","name":"Barre Sculpt","desc":"ผสาน Ballet · Pilates · Cardio ท่วงท่ากระชับสัดส่วน สนุกไปกับจังหวะเพลง","len":"45 นาที","lvl":"All levels","img":""},
-    {"tag":"Balance","name":"Yoga Flow","desc":"Vinyasa ลื่นไหล คลายความตึง เพิ่มสมาธิและความสมดุลของร่างกายและจิตใจ","len":"60 นาที","lvl":"All levels","img":""},
-    {"tag":"Private","name":"Private Session","desc":"เทรนตัวต่อตัวกับครู ออกแบบโปรแกรมเฉพาะคุณ เหมาะกับผู้เริ่มต้นหรือมีข้อจำกัดร่างกาย","len":"55 นาที","lvl":"By appointment","img":""},
-    {"tag":"Prenatal","name":"Prenatal Pilates","desc":"คลาสสำหรับคุณแม่ตั้งครรภ์ เคลื่อนไหวปลอดภัย เสริมความแข็งแรงเตรียมพร้อมคลอด","len":"50 นาที","lvl":"Prenatal","img":""}
-  ],
-  "instructors":[
-    {"name":"ชื่อครู 1","role":"Head Instructor · BASI","bio":"ผู้สอนหลักด้าน Reformer & Mat Pilates","img":""},
-    {"name":"ชื่อครู 2","role":"Reformer & Barre","bio":"เชี่ยวชาญ Barre และคลาสกลุ่ม","img":""},
-    {"name":"ชื่อครู 3","role":"Yoga & Flow","bio":"ครูโยคะ เน้นลมหายใจและสมาธิ","img":""},
-    {"name":"ชื่อครู 4","role":"Prenatal & Private","bio":"ดูแลคลาสส่วนตัวและคุณแม่ตั้งครรภ์","img":""}
-  ],
-  "studio":{"address":"Khon Kaen\n[ใส่ที่อยู่เต็มของสตูดิโอ]","hours":"08:00 – 20:00","hoursNote":"เปิดทุกวัน · ปิดวันจันทร์","contactVal":"[ใส่ LINE ID / เบอร์โทร]","mapEmbed":""},
-  "packages":[
-    {"name":"Mini Pass","tag":"เริ่มต้นทดลอง","price":"—","unit":"/ คลาส","feat":false,"items":["เหมาะกับผู้เริ่มต้น","จองคลาสกลุ่มได้ทุกประเภท","ใช้ได้ทุกสาขาเวลาเปิดทำการ"]},
-    {"name":"Intensive Journey","tag":"ยอดนิยม","price":"—","unit":"/ แพ็กเกจ","feat":true,"items":["แพ็กเกจคลาสต่อเนื่อง คุ้มที่สุด","เห็นผลชัดเจนกับการฝึกสม่ำเสมอ","สิทธิ์จองล่วงหน้า + Body Report"]},
-    {"name":"Experience Pass","tag":"ยืดหยุ่นสูง","price":"—","unit":"/ แพ็กเกจ","feat":false,"items":["เลือกคลาสได้หลากหลาย","ยืดหยุ่นเรื่องเวลา","เหมาะกับสายชิลล์ ไม่รีบ"]}
-  ],
-  "contact":{"line":"","ig":"","fb":"","tiktok":"","phone":"[ใส่เบอร์โทร]"},
-  "footer":{"about":"สตูดิโอ Pilates · Reformer · Barre · Yoga แบบบูทีค ในขอนแก่น เคลื่อนไหวอย่างตั้งใจ เพื่อร่างกายและใจที่แข็งแรงขึ้นทุกวัน"}
+ "brand": {
+  "name": "Pilar"
+ },
+ "hero": {
+  "eyebrow": "Pilates · Reformer · Barre · Yoga — Khon Kaen",
+  "l1": "Move With",
+  "l2": "Intention.",
+  "sub": "Pilar คือสตูดิโอบูทีคที่เชื่อว่าการเคลื่อนไหวอย่างตั้งใจ เปลี่ยนทั้งร่างกายและจิตใจ — ฝึกในพื้นที่ที่ออกแบบมาเพื่อคุณ กับครูผู้สอนสาย BASI",
+  "img": ""
+ },
+ "kenko": {
+  "scheduleUrl": "https://pilar.onbookee.com/class-schedule",
+  "pricingUrl": "https://pilar.onbookee.com/pricing",
+  "bookUrl": "https://pilar.onbookee.com/class-schedule",
+  "loginUrl": "https://pilar.onbookee.com/login",
+  "signupUrl": "https://pilar.onbookee.com/create-account",
+  "scheduleHeight": "1700",
+  "pricingHeight": "1500",
+  "loginHeight": "860"
+ },
+ "services": [
+  {
+   "t": "Reformer",
+   "d": "อุปกรณ์ Reformer เต็มรูปแบบ"
+  },
+  {
+   "t": "Mat Pilates",
+   "d": "พื้นฐานตามหลัก BASI"
+  },
+  {
+   "t": "Barre",
+   "d": "กระชับสัดส่วนตามจังหวะ"
+  },
+  {
+   "t": "Yoga",
+   "d": "ผ่อนคลาย เพิ่มความยืดหยุ่น"
+  },
+  {
+   "t": "Private",
+   "d": "เทรนตัวต่อตัวเฉพาะคุณ"
+  },
+  {
+   "t": "Prenatal",
+   "d": "ดูแลคุณแม่ตั้งครรภ์"
+  }
+ ],
+ "gallery": [
+  {
+   "label": "Reformer Room",
+   "img": ""
+  },
+  {
+   "label": "Barre Studio",
+   "img": ""
+  },
+  {
+   "label": "Mat Class",
+   "img": ""
+  },
+  {
+   "label": "Community",
+   "img": ""
+  }
+ ],
+ "classes": [
+  {
+   "tag": "Signature",
+   "name": "Reformer Flow",
+   "desc": "คลาส Reformer แบบต่อเนื่อง สร้างความแข็งแรงแกนกลางลำตัวและความยืดหยุ่น เหมาะกับทุกระดับ",
+   "len": "50 นาที",
+   "lvl": "All levels",
+   "img": ""
+  },
+  {
+   "tag": "Foundation",
+   "name": "Mat Pilates",
+   "desc": "พื้นฐาน Pilates บนเสื่อ ตามหลัก BASI เน้นการหายใจ การจัดวางร่างกาย และการควบคุม",
+   "len": "50 นาที",
+   "lvl": "Beginner+",
+   "img": ""
+  },
+  {
+   "tag": "Sculpt",
+   "name": "Barre Sculpt",
+   "desc": "ผสาน Ballet · Pilates · Cardio ท่วงท่ากระชับสัดส่วน สนุกไปกับจังหวะเพลง",
+   "len": "45 นาที",
+   "lvl": "All levels",
+   "img": ""
+  },
+  {
+   "tag": "Balance",
+   "name": "Yoga Flow",
+   "desc": "Vinyasa ลื่นไหล คลายความตึง เพิ่มสมาธิและความสมดุลของร่างกายและจิตใจ",
+   "len": "60 นาที",
+   "lvl": "All levels",
+   "img": ""
+  },
+  {
+   "tag": "Private",
+   "name": "Private Session",
+   "desc": "เทรนตัวต่อตัวกับครู ออกแบบโปรแกรมเฉพาะคุณ เหมาะกับผู้เริ่มต้นหรือมีข้อจำกัดร่างกาย",
+   "len": "55 นาที",
+   "lvl": "By appointment",
+   "img": ""
+  },
+  {
+   "tag": "Prenatal",
+   "name": "Prenatal Pilates",
+   "desc": "คลาสสำหรับคุณแม่ตั้งครรภ์ เคลื่อนไหวปลอดภัย เสริมความแข็งแรงเตรียมพร้อมคลอด",
+   "len": "50 นาที",
+   "lvl": "Prenatal",
+   "img": ""
+  }
+ ],
+ "instructors": [
+  {
+   "name": "ชื่อครู 1",
+   "role": "Head Instructor · BASI",
+   "bio": "ผู้สอนหลักด้าน Reformer & Mat Pilates",
+   "img": ""
+  },
+  {
+   "name": "ชื่อครู 2",
+   "role": "Reformer & Barre",
+   "bio": "เชี่ยวชาญ Barre และคลาสกลุ่ม",
+   "img": ""
+  },
+  {
+   "name": "ชื่อครู 3",
+   "role": "Yoga & Flow",
+   "bio": "ครูโยคะ เน้นลมหายใจและสมาธิ",
+   "img": ""
+  },
+  {
+   "name": "ชื่อครู 4",
+   "role": "Prenatal & Private",
+   "bio": "ดูแลคลาสส่วนตัวและคุณแม่ตั้งครรภ์",
+   "img": ""
+  }
+ ],
+ "studio": {
+  "address": "Khon Kaen\n[ใส่ที่อยู่เต็มของสตูดิโอ]",
+  "hours": "08:00 – 20:00",
+  "hoursNote": "เปิดทุกวัน · ปิดวันจันทร์",
+  "contactVal": "[ใส่ LINE ID / เบอร์โทร]",
+  "mapEmbed": ""
+ },
+ "packages": [
+  {
+   "name": "Mini Pass",
+   "tag": "เริ่มต้นทดลอง",
+   "price": "—",
+   "unit": "/ คลาส",
+   "feat": false,
+   "items": [
+    "เหมาะกับผู้เริ่มต้น",
+    "จองคลาสกลุ่มได้ทุกประเภท",
+    "ใช้ได้ทุกสาขาเวลาเปิดทำการ"
+   ],
+   "img": ""
+  },
+  {
+   "name": "Intensive Journey",
+   "tag": "ยอดนิยม",
+   "price": "—",
+   "unit": "/ แพ็กเกจ",
+   "feat": true,
+   "items": [
+    "แพ็กเกจคลาสต่อเนื่อง คุ้มที่สุด",
+    "เห็นผลชัดเจนกับการฝึกสม่ำเสมอ",
+    "สิทธิ์จองล่วงหน้า + Body Report"
+   ],
+   "img": ""
+  },
+  {
+   "name": "Experience Pass",
+   "tag": "ยืดหยุ่นสูง",
+   "price": "—",
+   "unit": "/ แพ็กเกจ",
+   "feat": false,
+   "items": [
+    "เลือกคลาสได้หลากหลาย",
+    "ยืดหยุ่นเรื่องเวลา",
+    "เหมาะกับสายชิลล์ ไม่รีบ"
+   ],
+   "img": ""
+  }
+ ],
+ "contact": {
+  "line": "",
+  "ig": "",
+  "fb": "",
+  "tiktok": "",
+  "phone": "[ใส่เบอร์โทร]"
+ },
+ "footer": {
+  "about": "สตูดิโอ Pilates · Reformer · Barre · Yoga แบบบูทีค ในขอนแก่น เคลื่อนไหวอย่างตั้งใจ เพื่อร่างกายและใจที่แข็งแรงขึ้นทุกวัน"
+ }
 }
 </script>
 
@@ -669,8 +856,7 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
     </a>
     <nav class="nav-links" id="deskNav"></nav>
     <div style="display:flex;align-items:center;gap:12px">
-      <a href="#/login" class="nav-login" id="navLogin">Login / Signup</a>
-      <a href="#/schedule" class="btn btn-gold" id="navBook" style="padding:7px 8px 7px 20px">Book</a>
+      <a href="#/login" class="btn btn-gold" id="navLogin" style="padding:7px 8px 7px 20px">Login</a>
       <button class="hamburger" id="openMenu" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"></path></svg></button>
     </div>
   </div>
@@ -683,8 +869,8 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
   </div>
   <nav id="mobNav"></nav>
   <div class="m-foot">
-    <a href="#/login" class="btn btn-ghost btn-lg" id="mobLogin">Login / Signup</a>
-    <a href="#/schedule" class="btn btn-gold btn-lg">จองคลาสวันนี้</a>
+    <a href="#/login" class="btn btn-gold btn-lg" id="mobLogin">Login / Signup</a>
+    <a href="#/schedule" class="btn btn-ghost btn-lg">ดูตารางคลาส</a>
     <span style="color:var(--muted);font-size:12.5px">Khon Kaen · เปิด 8:00–20:00 · ปิดวันจันทร์</span>
   </div>
 </div>
@@ -700,7 +886,7 @@ h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.02em}
       </div>
       <div class="col">
         <h4>Menu</h4>
-        <a href="#/classes">Classes</a><a href="#/instructors">Instructors</a><a href="#/studio">Studio</a><a href="#/schedule">Schedule</a><a href="#/packages">Packages</a><a href="#/contact">Contact</a>
+        <a href="#/classes">Classes</a><a href="#/instructors">Instructors</a><a href="#/studio">Studio</a><a href="#/schedule">Schedule</a><a href="#/packages">Packages</a>
       </div>
       <div class="col">
         <h4>Follow</h4>
@@ -732,7 +918,7 @@ const ext = h => (h||"").startsWith("http");
 const ROUTES=[["/","Home"],["/classes","Classes"],["/instructors","Instructors"],["/studio","Studio"],["/schedule","Schedule"],["/packages","Packages"],["/contact","Contact"],["/login","Login / Signup"]];
 const loginHref  = () => (STATE.kenko&&STATE.kenko.loginUrl)||"";
 const signupHref = () => (STATE.kenko&&STATE.kenko.signupUrl)||"";
-const NAVSHOW=["/classes","/instructors","/studio","/schedule","/packages","/contact"];
+const NAVSHOW=["/classes","/instructors","/studio","/schedule","/packages"];
 
 const chk='<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 const pin='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z"/><circle cx="12" cy="10" r="3"/></svg>';
@@ -742,9 +928,21 @@ const ig ='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wid
 const marqueeItems=["Reformer Flow","Mat Pilates","Barre Sculpt","Yoga Flow","Private Session","Prenatal","BASI Method","Move With Intention"];
 function marquee(){const line=marqueeItems.map((t,i)=>`<span class="${i%3===0?'on':''}">${t}</span><span class="dot">·</span>`).join("");return `<div class="marquee"><div class="marquee-track">${line}${line}</div></div>`;}
 
-function embedBlock(url, kind){
-  if(url && url.trim()){ return `<div class="embed-wrap"><iframe src="${esc(url)}" title="Pilar ${kind}" loading="lazy" allow="payment"></iframe></div>`; }
-  return `<div class="embed-wrap"><div class="embed-fallback">
+/* ความสูงกล่อง embed ต่อหน้า (px) — ปรับได้ในโหมดแก้ไข */
+function embedH(key, fallback){
+  const v = parseInt((STATE.kenko&&STATE.kenko[key])||"",10);
+  return (isFinite(v) && v>=300 && v<=6000) ? v : fallback;
+}
+function embedBlock(url, kind, heightKey, heightDefault){
+  const h = embedH(heightKey, heightDefault);
+  if(url && url.trim()){
+    return `<div class="embed-head">
+        <span class="lbl">ข้อมูลสดจากระบบ Kenko ของ Pilar</span>
+        <a class="embed-open" href="${esc(url)}" target="_blank" rel="noopener">เปิดเต็มหน้า <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="embed-wrap" style="--embed-h:${h}px"><iframe src="${esc(url)}" title="Pilar ${kind}" loading="lazy" allow="payment"></iframe></div>`;
+  }
+  return `<div class="embed-wrap" style="--embed-h:${Math.min(h,620)}px"><div class="embed-fallback">
       <div class="ic">${cal}</div>
       <h3>เชื่อมระบบ ${kind} ของ Kenko</h3>
       <p>ส่วนนี้จะแสดง${kind==='Schedule'?'ตารางคลาสและปุ่มจอง':'แพ็กเกจและการชำระเงิน'}สดจาก Kenko/Bookee เมื่อวางลิงก์แล้ว</p>
@@ -767,9 +965,6 @@ const PAGES = {
         <div class="hero-cta">
           <a href="#/schedule" class="btn btn-gold btn-lg">จองคลาสวันนี้</a>
           <a href="#/classes" class="btn btn-ghost btn-lg">ดูคลาสทั้งหมด</a>
-        </div>
-        <div class="hero-meta">
-          ${(STATE.hero.meta||[]).map(m=>`<div><span class="k">${esc(m.k)}</span><span class="v">${esc(m.v)}</span></div>`).join("")}
         </div>
       </div>
     </section>
@@ -849,7 +1044,7 @@ const PAGES = {
     <section class="section"><div class="wrap page">
       <div class="shead"><div class="eyebrow">Schedule & Booking</div><h2 class="display">Schedule<span class="grad-gold"> & booking</span></h2>
         <p>ตารางคลาสและการจองทั้งหมดจัดการผ่านระบบ Kenko/Bookee ของ Pilar — เลือกวัน เวลา และครูที่คุณต้องการได้เลย</p></div>
-      ${embedBlock(STATE.kenko&&STATE.kenko.scheduleUrl, "Schedule")}
+      ${embedBlock(STATE.kenko&&STATE.kenko.scheduleUrl, "Schedule", "scheduleHeight", 1700)}
     </div></section>`,
 
   "/packages":()=>`
@@ -858,12 +1053,13 @@ const PAGES = {
         <p>เลือกแพ็กเกจที่เหมาะกับไลฟ์สไตล์ของคุณ ราคาและการซื้อจริงจัดการผ่าน Kenko/Bookee</p></div>
       <div class="price-grid">${(STATE.packages||[]).map(p=>`
         <div class="plan ${p.feat?'feat':''}">
+          ${p.img?`<div class="pimg"><img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy"></div>`:""}
           <div class="pname">${esc(p.name)}</div><div class="ptag">${esc(p.tag)}</div>
           <div class="pprice">${esc(p.price)}<small> ${esc(p.unit)}</small></div>
           <ul>${(p.items||[]).map(i=>`<li>${chk}<span>${esc(i)}</span></li>`).join("")}</ul>
           <a href="${bookHref()}" ${ext(bookHref())?'target="_blank" rel="noopener"':''} class="btn ${p.feat?'btn-gold':'btn-ghost'}">เลือกแพ็กเกจนี้</a>
         </div>`).join("")}</div>
-      <div style="margin-top:48px"><div class="eyebrow" style="margin-bottom:16px">ซื้อผ่านระบบ Kenko</div>${embedBlock(STATE.kenko&&STATE.kenko.pricingUrl,"Packages")}</div>
+      <div style="margin-top:48px"><div class="eyebrow" style="margin-bottom:16px">ซื้อผ่านระบบ Kenko</div>${embedBlock(STATE.kenko&&STATE.kenko.pricingUrl,"Packages","pricingHeight",1500)}</div>
     </div></section>`,
 
   "/login":()=>{
@@ -871,7 +1067,7 @@ const PAGES = {
     if(!lg){
       return `<section class="section"><div class="wrap page">
         <div class="shead"><div class="eyebrow">Member Account</div><h2 class="display">Member<span class="grad-gold"> login</span></h2></div>
-        <div class="embed-wrap"><div class="embed-fallback">
+        <div class="embed-wrap" style="--embed-h:560px"><div class="embed-fallback">
           <div class="ic">${cal}</div><h3>Login link not set</h3>
           <p>Add your Kenko login link in edit mode and this page will show the member sign-in.</p>
           <p class="hint">กดปุ่ม “✎ แก้ไขเว็บ” → หัวข้อ “ลิงก์ Kenko / Bookee” → ใส่ Login URL</p>
@@ -886,7 +1082,11 @@ const PAGES = {
           ${su?`<a class="btn btn-ghost" href="${esc(su)}" target="_blank" rel="noopener">Create an account</a>`:''}
         </div>
       </div>
-      <div class="embed-wrap"><iframe src="${esc(lg)}" title="Pilar member login" loading="lazy" allow="payment"></iframe></div>
+      <div class="embed-head">
+        <span class="lbl">ระบบสมาชิกของ Pilar (Kenko)</span>
+        <a class="embed-open" href="${esc(lg)}" target="_blank" rel="noopener">เปิดเต็มหน้า <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="embed-wrap" style="--embed-h:${embedH("loginHeight",860)}px"><iframe src="${esc(lg)}" title="Pilar member login" loading="lazy" allow="payment"></iframe></div>
       <p class="hint" style="margin-top:14px;text-align:center;color:var(--muted);font-size:13px">
         ถ้าช่องด้านบนว่างเปล่า (ระบบความปลอดภัยของ Kenko บางครั้งไม่อนุญาตให้ฝังในเว็บอื่น) ใช้ปุ่ม
         <b>Open login</b> ด้านบนเพื่อเปิดในแท็บใหม่ได้เลย
@@ -927,7 +1127,7 @@ function paintChrome(){
   document.getElementById("navBrand").innerHTML = esc(STATE.brand.name)+'<b>.</b>';
   document.getElementById("footBrand").innerHTML = esc(STATE.brand.name)+'<b>.</b>';
   document.getElementById("footAbout").textContent = STATE.footer&&STATE.footer.about||"";
-  const nb=document.getElementById("navBook"); nb.href=bookHref(); if(ext(bookHref())){nb.target="_blank";nb.rel="noopener";}
+  /* ปุ่มมุมขวาเป็น Login (ลิงก์ภายในไปหน้า Member login) — ไม่ต้องตั้งค่าอะไรเพิ่ม */
   const c=STATE.contact||{};
   const socials=[["Instagram",c.ig],["Facebook",c.fb],["LINE Official",c.line],["TikTok",c.tiktok]];
   document.getElementById("footSocial").innerHTML = socials.map(([l,h])=>`<a href="${h?esc(h):'#'}" ${h?'target="_blank" rel="noopener"':'onclick="return false"'}>${l}</a>`).join("");
@@ -937,6 +1137,7 @@ function render(){
   app.innerHTML=(PAGES[path]||PAGES["/"])();
   document.querySelectorAll("#deskNav a,#mobNav a,#navLogin").forEach(a=>a.classList.toggle("active", a.getAttribute("href")==="#"+path));
   paintChrome();
+  if(typeof setGridZoom==="function") setGridZoom();
   const f=document.getElementById("cform");
   if(f) f.addEventListener("submit",e=>{e.preventDefault();document.getElementById("cnote").textContent="ขอบคุณค่ะ! ทีมงานจะติดต่อกลับโดยเร็ว";f.reset();});
 }
@@ -972,6 +1173,22 @@ async function loadServerContent(){
 }
 const SERVER_READY = loadServerContent();
 
+/* ---------- มือถือ: คำนวณอัตราย่อกริดการ์ด (คงสัดส่วนการ์ดเดิม) ---------- */
+function setGridZoom(){
+  const GRID_W = 1120;   /* ความกว้างที่ใช้จัดเลย์เอาต์ = เหมือนเดสก์ท็อป */
+  const root=document.documentElement;
+  if(window.innerWidth>760){ root.style.removeProperty("--grid-zoom"); return; }
+  let avail=root.clientWidth-24;
+  const w=document.querySelector(".wrap");
+  if(w){ const cs=getComputedStyle(w);
+    avail=w.clientWidth-parseFloat(cs.paddingLeft||0)-parseFloat(cs.paddingRight||0); }
+  root.style.setProperty("--grid-w", GRID_W+"px");
+  root.style.setProperty("--grid-zoom", String(Math.min(1, avail/GRID_W)));
+}
+setGridZoom();
+window.addEventListener("resize", setGridZoom);
+window.addEventListener("orientationchange", ()=>setTimeout(setGridZoom,120));
+
 /* toast */
 let toastT;
 function toast(msg){let t=document.getElementById("toast");if(!t){t=document.createElement("div");t.id="toast";t.className="toast";document.body.appendChild(t);}t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2600);}
@@ -986,6 +1203,9 @@ const EDIT_SCHEMA=[
     {path:"kenko.bookUrl",label:"ลิงก์ปุ่ม ‘จอง’ หลัก",type:"url",help:"เว้นว่างได้ = ใช้ลิงก์ตารางคลาสอัตโนมัติ"},
     {path:"kenko.loginUrl",label:"ลิงก์ Login สมาชิก (Bookee)",type:"url",help:"ของ Pilar: https://pilar.onbookee.com/login — แสดงในหน้า Login / Signup"},
     {path:"kenko.signupUrl",label:"ลิงก์สมัครสมาชิกใหม่ (Bookee)",type:"url",help:"ของ Pilar: https://pilar.onbookee.com/create-account"},
+    {path:"kenko.scheduleHeight",label:"ความสูงกล่องตารางคลาส (px)",type:"text",help:"ค่าเริ่มต้น 1700 — ถ้ายังมีแถบเลื่อนในกล่อง ให้เพิ่มเป็น 2000/2400; ถ้าเหลือที่ว่างมาก ให้ลด"},
+    {path:"kenko.pricingHeight",label:"ความสูงกล่องแพ็กเกจ (px)",type:"text",help:"ค่าเริ่มต้น 1500"},
+    {path:"kenko.loginHeight",label:"ความสูงกล่อง Login (px)",type:"text",help:"ค่าเริ่มต้น 860"},
   ]},
   {group:"✍️ แบรนด์ & หัวเว็บ (Hero)",fields:[
     {path:"brand.name",label:"ชื่อแบรนด์",type:"text"},
@@ -1018,6 +1238,7 @@ const EDIT_SCHEMA=[
     {path:"name",label:"ชื่อแพ็กเกจ",type:"text"},{path:"tag",label:"คำอธิบายสั้น",type:"text"},
     {path:"price",label:"ราคา",type:"text"},{path:"unit",label:"หน่วย (เช่น / คลาส)",type:"text"},
     {path:"items",label:"รายละเอียด (บรรทัดละ 1 ข้อ)",type:"lines"},
+    {path:"img",label:"รูปในการ์ด (ถ้ามี)",type:"image"},
     {path:"feat",label:"แพ็กเกจแนะนำ (ติดป้าย POPULAR)",type:"bool"},
   ]},
   {group:"📣 ติดต่อ & โซเชียล",fields:[
